@@ -1,0 +1,32 @@
+# ----------------------------------------------------------- build Java
+target/
+!.mvn/wrapper/maven-wrapper.jar
+*.class
+
+# ------------------------------------------------------------------ IDEs
+.idea/
+*.iml
+*.iws
+.vscode/
+.settings/
+.project
+.classpath
+nbproject/
+
+# ------------------------------------------------------------- ambiente
+.env
+*.log
+
+# ------------------------------------------------- memoria de trabalho
+# Anotacoes internas da equipe: em que etapa o trabalho esta, decisoes ja
+# tomadas e armadilhas ja descobertas. Nao faz parte da entrega.
+CLAUDE.md
+
+# ------------------------------------------------- sistema operacional
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ------------------------------------------------- material de apoio local
+# Enunciado e arquivos recebidos do professor: ficam so na maquina.
+Arquivos/

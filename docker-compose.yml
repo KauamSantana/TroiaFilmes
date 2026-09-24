@@ -1,0 +1,48 @@
+# =====================================================================
+# TroiaFilms - banco de desenvolvimento
+#
+#   docker compose up -d        sobe o banco
+#   docker compose logs -f db   acompanha os logs
+#   docker compose down         para (mantem os dados)
+#   docker compose down -v      para e APAGA os dados
+#
+# Os valores abaixo sao exatamente os do application.properties, de
+# proposito: quem clonar o projeto roda um comando e a aplicacao conecta,
+# sem precisar ter o PostgreSQL instalado nem configurar nada.
+#
+# ATENCAO: a porta 5432 e a padrao do PostgreSQL. Se voce tiver o banco
+# instalado na maquina, pare o servico antes de subir o container, senao
+# os dois brigam pela mesma porta:
+#   Windows  ->  net stop postgresql-x64-17
+#   Linux    ->  sudo systemctl stop postgresql
+# =====================================================================
+services:
+  db:
+    image: postgres:17-alpine
+    container_name: troiafilms-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: unesc
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: lab008r2
+      # Garante UTF-8: os scripts do Flyway tem acentuacao.
+      POSTGRES_INITDB_ARGS: "--encoding=UTF8 --locale=C"
+    ports:
+      - "5432:5432"
+    volumes:
+      - dados-postgres:/var/lib/postgresql/data
+    healthcheck:
+      # A aplicacao so deve tentar conectar depois que o banco aceitar conexoes.
+      test: ["CMD-SHELL", "pg_isready -U postgres -d unesc"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+      start_period: 10s
+
+volumes:
+  dados-postgres:
+    # O nome traz o banco no final de proposito. Se um volume antigo, com
+    # outro banco dentro, for reaproveitado, o PostgreSQL pula a criacao
+    # inicial em silencio -- e a aplicacao falha na autenticacao sem que
+    # nada no log explique o motivo.
+    name: troiafilms-dados-unesc

@@ -1,0 +1,19 @@
+# Normaliza os finais de linha, para que o repositorio fique igual
+# independentemente do sistema operacional de quem commita.
+* text=auto
+
+# Estes rodam em Linux e Mac: com CRLF o shell recusa executar o arquivo.
+mvnw   text eol=lf
+*.sh   text eol=lf
+
+# Estes so rodam no Windows.
+mvnw.cmd text eol=crlf
+*.cmd    text eol=crlf
+*.bat    text eol=crlf
+
+# Binarios nao devem sofrer conversao nenhuma.
+*.jar  binary
+*.png  binary
+*.jpg  binary
+*.docx binary
+*.pptx binary

@@ -1,5 +1,5 @@
 -- =====================================================================
--- TroiaFilms - V2: planos e assinaturas
+-- TroiaFilmes - V2: planos e assinaturas
 -- Usuario (1) --- (N) Assinatura (N) --- (1) Plano
 -- =====================================================================
 
@@ -17,7 +17,7 @@ CREATE TABLE plano (
     CONSTRAINT ck_plano_qualidade  CHECK (qualidade_maxima IN ('SD', 'HD', 'UHD'))
 );
 
-COMMENT ON TABLE  plano            IS 'Plano de assinatura comercializado pelo TroiaFilms';
+COMMENT ON TABLE  plano            IS 'Plano de assinatura comercializado pelo TroiaFilmes';
 COMMENT ON COLUMN plano.max_perfis IS 'Limite de perfis que o assinante pode criar';
 
 CREATE TABLE assinatura (

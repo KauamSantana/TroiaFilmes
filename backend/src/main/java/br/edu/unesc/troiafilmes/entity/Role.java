@@ -1,4 +1,4 @@
-package br.edu.unesc.troiafilms.entity;
+package br.edu.unesc.troiafilmes.entity;
 
 /**
  * Papel de um usuário no sistema. Usado pelo Spring Security para

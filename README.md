@@ -1,4 +1,4 @@
-# TroiaFilms
+# TroiaFilmes
 
 API REST de um serviço de streaming de filmes.
 Trabalho 1 — Desenvolvimento Backend com Spring Boot · UNESC · Prof. Matheus Leandro Ferreira.
@@ -21,13 +21,13 @@ as tabelas e encerra.
 O que existe hoje:
 
 ```
-TroiaFilms/
+TroiaFilmes/
 ├── docker-compose.yml                  PostgreSQL 17 já configurado
 └── backend/
     ├── pom.xml
     └── src/main/
-        ├── java/br/edu/unesc/troiafilms/
-        │   ├── TroiaFilmsApplication.java
+        ├── java/br/edu/unesc/troiafilmes/
+        │   ├── TroiaFilmesApplication.java
         │   └── entity/                 9 entidades + 3 enums + 1 de apoio
         └── resources/
             ├── application.properties
@@ -64,7 +64,7 @@ entidades mapeadas.
 Para conferir o banco por dentro:
 
 ```bash
-docker exec -it troiafilms-db psql -U postgres -d unesc -c "\dt"
+docker exec -it troiafilmes-db psql -U postgres -d unesc -c "\dt"
 ```
 
 ---
@@ -153,8 +153,8 @@ Todas de demonstração, criadas pelo `docker-compose.yml` e pela migration V5.
 | Onde | Usuário | Senha |
 |---|---|---|
 | Banco de desenvolvimento | `postgres` | `lab008r2` |
-| Conta ADMIN do seed | `admin@troiafilms.com` | `Admin@123` |
-| Conta USER do seed | `usuario@troiafilms.com` | `User@123` |
+| Conta ADMIN do seed | `admin@troiafilmes.com` | `Admin@123` |
+| Conta USER do seed | `usuario@troiafilmes.com` | `User@123` |
 
 As senhas das contas ficam no banco apenas como hash BCrypt. O login com elas passa a
 funcionar quando a autenticação JWT entrar.

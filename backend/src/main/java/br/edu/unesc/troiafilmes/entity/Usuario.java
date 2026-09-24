@@ -1,4 +1,4 @@
-package br.edu.unesc.troiafilms.entity;
+package br.edu.unesc.troiafilmes.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Conta de acesso ao TroiaFilms.
+ * Conta de acesso ao TroiaFilmes.
  *
  * <p>Relacionamentos: um usuário possui vários perfis (1:N) e várias
  * assinaturas ao longo do tempo (1:N), das quais no máximo uma fica ATIVA.</p>

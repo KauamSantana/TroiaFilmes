@@ -1,4 +1,4 @@
-package br.edu.unesc.troiafilms.entity;
+package br.edu.unesc.troiafilmes.entity;
 
 /** Situação de uma assinatura ao longo do seu ciclo de vida. */
 public enum StatusAssinatura {

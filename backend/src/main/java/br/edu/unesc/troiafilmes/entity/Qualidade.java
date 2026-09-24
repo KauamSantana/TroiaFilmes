@@ -1,4 +1,4 @@
-package br.edu.unesc.troiafilms.entity;
+package br.edu.unesc.troiafilmes.entity;
 
 /** Qualidade máxima de reprodução liberada por um plano. */
 public enum Qualidade {

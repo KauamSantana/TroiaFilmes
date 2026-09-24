@@ -1,4 +1,4 @@
-package br.edu.unesc.troiafilms.entity;
+package br.edu.unesc.troiafilmes.entity;
 
 import jakarta.persistence.*;
 import lombok.*;

@@ -1,5 +1,5 @@
 # =====================================================================
-# TroiaFilms - banco de desenvolvimento
+# TroiaFilmes - banco de desenvolvimento
 #
 #   docker compose up -d        sobe o banco
 #   docker compose logs -f db   acompanha os logs
@@ -19,7 +19,7 @@
 services:
   db:
     image: postgres:17-alpine
-    container_name: troiafilms-db
+    container_name: troiafilmes-db
     restart: unless-stopped
     environment:
       POSTGRES_DB: unesc
@@ -45,4 +45,4 @@ volumes:
     # outro banco dentro, for reaproveitado, o PostgreSQL pula a criacao
     # inicial em silencio -- e a aplicacao falha na autenticacao sem que
     # nada no log explique o motivo.
-    name: troiafilms-dados-unesc
+    name: troiafilmes-dados-unesc

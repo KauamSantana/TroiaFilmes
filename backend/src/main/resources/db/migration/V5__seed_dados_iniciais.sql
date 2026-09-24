@@ -1,9 +1,9 @@
 -- =====================================================================
--- TroiaFilms - V5: massa de dados inicial para demonstracao
+-- TroiaFilmes - V5: massa de dados inicial para demonstracao
 --
 -- Senhas (hash BCrypt):
---   admin@troiafilms.com   -> Admin@123
---   usuario@troiafilms.com -> User@123
+--   admin@troiafilmes.com   -> Admin@123
+--   usuario@troiafilmes.com -> User@123
 -- =====================================================================
 
 -- ---------------------------------------------------------------- planos
@@ -14,14 +14,14 @@ INSERT INTO plano (nome, descricao, preco, max_perfis, qualidade_maxima, ativo) 
 
 -- -------------------------------------------------------------- usuarios
 INSERT INTO usuario (nome, email, senha, role, ativo) VALUES
-    ('Administrador TroiaFilms', 'admin@troiafilms.com',   '$2a$10$YHoEbCQloUYPmEGvBZRxh.PC040/uf3eVzTehKLpUr45j5Q0coxt.', 'ADMIN', TRUE),
-    ('Usuário Demonstração',     'usuario@troiafilms.com', '$2a$10$T7H3t6rZA1zP.X28EPigvu4dXqh9VpjzUrDYSRabvGt7zhgMZI/GO', 'USER',  TRUE);
+    ('Administrador TroiaFilmes', 'admin@troiafilmes.com',   '$2a$10$YHoEbCQloUYPmEGvBZRxh.PC040/uf3eVzTehKLpUr45j5Q0coxt.', 'ADMIN', TRUE),
+    ('Usuário Demonstração',      'usuario@troiafilmes.com', '$2a$10$T7H3t6rZA1zP.X28EPigvu4dXqh9VpjzUrDYSRabvGt7zhgMZI/GO', 'USER',  TRUE);
 
 -- assinatura Premium para o usuario de demonstracao (permite ate 5 perfis)
 INSERT INTO assinatura (usuario_id, plano_id, data_inicio, status)
 SELECT u.id, p.id, CURRENT_DATE, 'ATIVA'
   FROM usuario u, plano p
- WHERE u.email = 'usuario@troiafilms.com' AND p.nome = 'Premium';
+ WHERE u.email = 'usuario@troiafilmes.com' AND p.nome = 'Premium';
 
 -- --------------------------------------------------------------- perfis
 INSERT INTO perfil (usuario_id, nome, avatar_url, infantil)
@@ -31,7 +31,7 @@ SELECT u.id, v.nome, v.avatar, v.infantil
         ('Principal', 'https://api.dicebear.com/9.x/bottts/svg?seed=principal', FALSE),
         ('Infantil',  'https://api.dicebear.com/9.x/bottts/svg?seed=infantil',  TRUE)
        ) AS v(nome, avatar, infantil) ON TRUE
- WHERE u.email = 'usuario@troiafilms.com';
+ WHERE u.email = 'usuario@troiafilmes.com';
 
 -- ----------------------------------------------------------- categorias
 INSERT INTO categoria (nome, descricao) VALUES
@@ -119,14 +119,14 @@ SELECT p.id, f.id, v.nota, v.comentario
        ) AS v(titulo, nota, comentario)
   JOIN filme   f ON f.titulo = v.titulo
   JOIN perfil  p ON p.nome   = 'Principal'
-  JOIN usuario u ON u.id = p.usuario_id AND u.email = 'usuario@troiafilms.com';
+  JOIN usuario u ON u.id = p.usuario_id AND u.email = 'usuario@troiafilmes.com';
 
 -- ------------------------------------------ Minha Lista do perfil Principal
 INSERT INTO item_lista (perfil_id, filme_id)
 SELECT p.id, f.id
   FROM filme f
   JOIN perfil  p ON p.nome = 'Principal'
-  JOIN usuario u ON u.id = p.usuario_id AND u.email = 'usuario@troiafilms.com'
+  JOIN usuario u ON u.id = p.usuario_id AND u.email = 'usuario@troiafilmes.com'
  WHERE f.titulo IN ('Bacurau', 'Senna', 'O Poderoso Chefão', 'Corra!');
 
 -- ----------------------------------- historico ("continuar assistindo")
@@ -141,4 +141,4 @@ SELECT p.id, f.id, v.minutos, v.concluido
        ) AS v(titulo, minutos, concluido)
   JOIN filme   f ON f.titulo = v.titulo
   JOIN perfil  p ON p.nome   = 'Principal'
-  JOIN usuario u ON u.id = p.usuario_id AND u.email = 'usuario@troiafilms.com';
+  JOIN usuario u ON u.id = p.usuario_id AND u.email = 'usuario@troiafilmes.com';

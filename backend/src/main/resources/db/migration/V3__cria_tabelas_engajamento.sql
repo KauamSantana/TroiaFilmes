@@ -1,5 +1,5 @@
 -- =====================================================================
--- TroiaFilms - V3: Minha Lista e Historico de Visualizacao
+-- TroiaFilmes - V3: Minha Lista e Historico de Visualizacao
 -- Perfil (N) --- (N) Filme, resolvido por entidades associativas
 -- =====================================================================
 

@@ -1,5 +1,5 @@
 -- =====================================================================
--- TroiaFilms - V1: tabelas do nucleo do dominio
+-- TroiaFilmes - V1: tabelas do nucleo do dominio
 -- Usuario -> Perfil -> Avaliacao <- Filme <-> Categoria
 -- =====================================================================
 
@@ -15,7 +15,7 @@ CREATE TABLE usuario (
     CONSTRAINT ck_usuario_role  CHECK (role IN ('ADMIN', 'USER'))
 );
 
-COMMENT ON TABLE  usuario       IS 'Conta de acesso ao TroiaFilms';
+COMMENT ON TABLE  usuario       IS 'Conta de acesso ao TroiaFilmes';
 COMMENT ON COLUMN usuario.senha IS 'Hash BCrypt - a senha em texto puro nunca e persistida';
 COMMENT ON COLUMN usuario.ativo IS 'Soft delete: usuario inativo nao consegue autenticar';
 

@@ -12,10 +12,10 @@
     </parent>
 
     <groupId>br.edu.unesc</groupId>
-    <artifactId>troiafilms</artifactId>
+    <artifactId>troiafilmes</artifactId>
     <version>1.0.0</version>
-    <name>troiafilms</name>
-    <description>TroiaFilms - Trabalho 1 de Desenvolvimento Backend com Spring Boot (UNESC)</description>
+    <name>troiafilmes</name>
+    <description>TroiaFilmes - Trabalho 1 de Desenvolvimento Backend com Spring Boot (UNESC)</description>
 
     <!--
         As dependencias crescem junto com as entregas. Nesta primeira etapa o

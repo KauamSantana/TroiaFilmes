@@ -17,11 +17,6 @@ nbproject/
 .env
 *.log
 
-# ------------------------------------------------- memoria de trabalho
-# Anotacoes internas da equipe: em que etapa o trabalho esta, decisoes ja
-# tomadas e armadilhas ja descobertas. Nao faz parte da entrega.
-CLAUDE.md
-
 # ------------------------------------------------- sistema operacional
 .DS_Store
 Thumbs.db

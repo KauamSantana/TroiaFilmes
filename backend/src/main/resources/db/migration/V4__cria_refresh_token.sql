@@ -1,5 +1,5 @@
 -- =====================================================================
--- TroiaFilms - V4: refresh tokens
+-- TroiaFilmes - V4: refresh tokens
 -- Persistidos para permitir revogacao no logout
 -- =====================================================================
 

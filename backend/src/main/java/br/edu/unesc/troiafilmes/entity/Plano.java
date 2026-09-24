@@ -1,4 +1,4 @@
-package br.edu.unesc.troiafilms.entity;
+package br.edu.unesc.troiafilmes.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Plano de assinatura comercializado pelo TroiaFilms.
+ * Plano de assinatura comercializado pelo TroiaFilmes.
  *
  * <p>O campo {@code maxPerfis} é o que sustenta a regra de negócio de limite
  * de perfis por conta.</p>

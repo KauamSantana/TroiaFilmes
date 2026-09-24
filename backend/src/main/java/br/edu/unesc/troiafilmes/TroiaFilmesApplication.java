@@ -1,10 +1,10 @@
-package br.edu.unesc.troiafilms;
+package br.edu.unesc.troiafilmes;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 /**
- * Ponto de entrada do TroiaFilms.
+ * Ponto de entrada do TroiaFilmes.
  *
  * <p>Nesta primeira etapa a aplicação não tem camada web: ao subir, ela
  * aplica as migrations do Flyway, valida o mapeamento das entidades contra
@@ -12,9 +12,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * prova que o schema e o pacote {@code entity} estão de acordo.</p>
  */
 @SpringBootApplication
-public class TroiaFilmsApplication {
+public class TroiaFilmesApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(TroiaFilmsApplication.class, args);
+        SpringApplication.run(TroiaFilmesApplication.class, args);
     }
 }

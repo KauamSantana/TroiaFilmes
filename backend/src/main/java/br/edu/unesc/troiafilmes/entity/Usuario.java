@@ -3,9 +3,13 @@ package br.edu.unesc.troiafilmes.entity;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -13,6 +17,10 @@ import java.util.List;
  *
  * <p>Relacionamentos: um usuário possui vários perfis (1:N) e várias
  * assinaturas ao longo do tempo (1:N), das quais no máximo uma fica ATIVA.</p>
+ *
+ * <p>Implementa {@link UserDetails} para que o Spring Security autentique
+ * direto pela entidade: o login é o e-mail, a senha é o hash BCrypt e o
+ * papel vira a autoridade {@code ROLE_ADMIN} ou {@code ROLE_USER}.</p>
  */
 @Entity
 @Table(name = "usuario")
@@ -23,7 +31,7 @@ import java.util.List;
 @Builder
 @EqualsAndHashCode(of = "id")
 @ToString(of = {"id", "nome", "email", "role"})
-public class Usuario {
+public class Usuario implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -64,5 +72,45 @@ public class Usuario {
     /** Conveniência para as regras de autorização. */
     public boolean isAdmin() {
         return Role.ADMIN.equals(this.role);
+    }
+
+    // ------------------------------------------------------ UserDetails
+
+    /** O prefixo ROLE_ é a convenção que {@code hasRole("ADMIN")} espera encontrar. */
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return List.of(new SimpleGrantedAuthority("ROLE_" + role.name()));
+    }
+
+    @Override
+    public String getPassword() {
+        return senha;
+    }
+
+    /** O e-mail é o identificador de login do TroiaFilmes. */
+    @Override
+    public String getUsername() {
+        return email;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    /** Conta desativada (soft delete) não autentica, mesmo com a senha certa. */
+    @Override
+    public boolean isEnabled() {
+        return Boolean.TRUE.equals(ativo);
     }
 }

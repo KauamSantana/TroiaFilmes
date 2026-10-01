@@ -12,11 +12,11 @@ Trabalho 1 — Desenvolvimento Backend com Spring Boot · UNESC · Prof. Matheus
 
 ---
 
-## Entrega atual — Aula 8 (24/09): entidades e relacionamentos
+## Entrega atual — Aula 9 (01/10): Spring Security com JWT
 
-Esta etapa entrega o **banco versionado** e o **mapeamento objeto-relacional**. Ainda não
-há camada web: a aplicação sobe, aplica as migrations, confere se as entidades batem com
-as tabelas e encerra.
+Esta etapa liga a **autenticação** à API: cadastro de conta, login com e-mail e senha, e
+um token JWT que precisa acompanhar toda requisição às rotas protegidas. Ela se apoia na
+entrega da Aula 8 (banco versionado com Flyway e pacote `entity`).
 
 O que existe hoje:
 
@@ -28,7 +28,12 @@ TroiaFilmes/
     └── src/main/
         ├── java/br/edu/unesc/troiafilmes/
         │   ├── TroiaFilmesApplication.java
-        │   └── entity/                 9 entidades + 3 enums + 1 de apoio
+        │   ├── config/                 SecurityConfig, SecurityFilter, TokenConfig, AuthConfig
+        │   ├── controller/             AuthController
+        │   ├── dto/request/            LoginRequest, RegistroUsuarioRequest
+        │   ├── dto/response/           LoginResponse, RegistroUsuarioResponse, UsuarioLogadoResponse
+        │   ├── entity/                 9 entidades + 3 enums + 1 de apoio
+        │   └── repository/             UsuarioRepository
         └── resources/
             ├── application.properties
             └── db/migration/           V1 a V5 (Flyway)
@@ -43,7 +48,7 @@ Você precisa de **Docker** e **JDK 21 ou superior**. Não precisa ter PostgreSQ
 ```bash
 docker compose up -d      # sobe o banco
 cd backend
-./mvnw spring-boot:run    # aplica as migrations e valida o mapeamento
+./mvnw spring-boot:run    # aplica as migrations e sobe a API na porta 8080
 ```
 
 > **Se você já tem PostgreSQL na máquina**, pare o serviço antes, senão os dois disputam a
@@ -55,11 +60,12 @@ Ao final você deve ver no log:
 
 ```
 Successfully applied 5 migrations to schema "public", now at version v5
+Tomcat started on port 8080 (http)
+Started TroiaFilmesApplication
 ```
 
-e a aplicação encerrando sem erro. **Encerrar é o resultado esperado nesta etapa** — é o
-que prova que as migrations rodaram e que o Hibernate validou as 11 tabelas contra as
-entidades mapeadas.
+A API fica no ar em `http://localhost:8080`. Os exemplos de uso estão na seção
+[Autenticação](#autenticação-jwt).
 
 Para conferir o banco por dentro:
 
@@ -81,7 +87,7 @@ barreira proposital: o banco nunca é alterado por acidente.
 | `V1__cria_tabelas_core.sql` | `usuario`, `perfil`, `filme`, `categoria`, `avaliacao` e a associativa `filme_categoria` |
 | `V2__cria_tabelas_assinatura.sql` | `plano` e `assinatura` |
 | `V3__cria_tabelas_engajamento.sql` | `item_lista` (Minha Lista) e `historico_visualizacao` |
-| `V4__cria_refresh_token.sql` | `refresh_token`, para a autenticação JWT da próxima entrega |
+| `V4__cria_refresh_token.sql` | `refresh_token`, reservada para a renovação de sessão (ainda não usada) |
 | `V5__seed_dados_iniciais.sql` | Massa inicial: 3 planos, 10 categorias, 24 filmes, 2 contas e dados de demonstração |
 
 ### Regras que já moram no banco
@@ -146,6 +152,85 @@ Nove entidades de domínio, três enums e a entidade de apoio `RefreshToken`.
 
 ---
 
+## Autenticação (JWT)
+
+Com o Spring Security, **toda rota nasce bloqueada**. Só duas ficam abertas, porque
+acontecem antes de existir um token: o cadastro e o login.
+
+| Método | Rota | Acesso | O que faz |
+|---|---|---|---|
+| `POST` | `/api/auth/registrar` | público | Cria uma conta com papel `USER` |
+| `POST` | `/api/auth/login` | público | Confere e-mail e senha e devolve o token |
+| `GET` | `/api/auth/usuario-logado` | com token | Mostra de quem é o token enviado |
+
+### Como funciona
+
+1. O login confere a senha contra o hash BCrypt do banco, através do `AuthenticationManager`.
+2. Se estiver certa, o `TokenConfig` gera um JWT assinado com HMAC256, válido por 24 horas.
+   O token carrega o e-mail (`sub`), o id do usuário e o papel.
+3. Nas requisições seguintes, o cliente envia `Authorization: Bearer <token>`.
+4. O `SecurityFilter` lê o header, confere assinatura, emissor e validade, e coloca o
+   usuário no contexto de segurança. A API é **stateless**: não há sessão no servidor.
+
+A entidade `Usuario` implementa `UserDetails`: o login é o e-mail, e o papel vira a
+autoridade `ROLE_ADMIN` ou `ROLE_USER`. Conta desativada (`ativo = false`) não faz login,
+e um token emitido antes da desativação deixa de valer na hora.
+
+### Exemplos
+
+**Cadastro**
+
+```bash
+curl -X POST http://localhost:8080/api/auth/registrar \
+  -H "Content-Type: application/json" \
+  -d '{"nome": "Estefani Souza", "email": "estefani@exemplo.com", "senha": "Senha@123"}'
+```
+
+```json
+HTTP 201
+{ "nome": "Estefani Souza", "email": "estefani@exemplo.com" }
+```
+
+**Login**
+
+```bash
+curl -X POST http://localhost:8080/api/auth/login \
+  -H "Content-Type: application/json" \
+  -d '{"email": "usuario@troiafilmes.com", "senha": "User@123"}'
+```
+
+```json
+HTTP 200
+{ "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..." }
+```
+
+**Rota protegida**
+
+```bash
+curl http://localhost:8080/api/auth/usuario-logado \
+  -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+```
+
+```json
+HTTP 200
+{ "id": 2, "nome": "Usuário Demonstração", "email": "usuario@troiafilmes.com", "role": "USER" }
+```
+
+### Respostas de erro
+
+| Situação | Código | Mensagem |
+|---|---|---|
+| Campo inválido ou faltando | `400` | Lista cada campo e o motivo, ex.: "A senha deve ter entre 8 e 72 caracteres." |
+| E-mail ou senha errados, ou conta desativada | `401` | "E-mail ou senha inválidos." |
+| Rota protegida sem token, ou token adulterado, vencido ou de outra chave | `401` | "Token ausente, inválido ou expirado." |
+| Cadastro com e-mail já existente | `409` | "Já existe uma conta com este e-mail." |
+
+O e-mail não diferencia maiúsculas: `Fulano@Email.com` e `fulano@email.com` são a mesma
+conta. A mensagem de login é a mesma para e-mail inexistente e senha errada, de propósito,
+para a API não revelar quais e-mails têm conta.
+
+---
+
 ## Credenciais
 
 Todas de demonstração, criadas pelo `docker-compose.yml` e pela migration V5.
@@ -156,8 +241,8 @@ Todas de demonstração, criadas pelo `docker-compose.yml` e pela migration V5.
 | Conta ADMIN do seed | `admin@troiafilmes.com` | `Admin@123` |
 | Conta USER do seed | `usuario@troiafilmes.com` | `User@123` |
 
-As senhas das contas ficam no banco apenas como hash BCrypt. O login com elas passa a
-funcionar quando a autenticação JWT entrar.
+As senhas das contas ficam no banco apenas como hash BCrypt. Use as duas contas em
+`POST /api/auth/login` para obter um token.
 
 ---
 
@@ -167,7 +252,6 @@ Seguindo o cronograma do enunciado:
 
 | Aula | Data | Conteúdo |
 |---|---|---|
-| 9 | 01/10 | Spring Security com JWT |
 | 10 | 08/10 | Camadas Controller, Service e Repository, DTOs e tratamento de exceções |
 | 11 | 15/10 | Swagger e ajustes |
 | 12 | 22/10 | Projeto final, frontend e apresentação |
@@ -184,3 +268,6 @@ no próprio arquivo; em resumo:
   por padrão.
 - Acrescentado `spring.flyway.encoding=UTF-8`, porque os scripts têm acentuação e sem isso
   o Flyway usa a codificação do sistema operacional.
+- A chave que assina os tokens fica em `troiafilmes.jwt.secret`, e não no código. O valor
+  do arquivo serve só para desenvolvimento: fora daqui, defina a variável de ambiente
+  `JWT_SECRET`. **Quem conhece a chave consegue fabricar tokens válidos.**

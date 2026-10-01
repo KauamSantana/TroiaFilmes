@@ -18,9 +18,9 @@
     <description>TroiaFilmes - Trabalho 1 de Desenvolvimento Backend com Spring Boot (UNESC)</description>
 
     <!--
-        As dependencias crescem junto com as entregas. Nesta primeira etapa o
-        projeto precisa apenas persistir e versionar o banco, entao nao ha web,
-        security nem documentacao de API aqui ainda.
+        As dependencias crescem junto com as entregas. A Aula 9 trouxe a camada
+        web, o Spring Security, o JWT e o Bean Validation dos DTOs. A
+        documentacao de API (Swagger) entra na Aula 11.
     -->
     <properties>
         <java.version>21</java.version>
@@ -28,9 +28,36 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <!-- Versao fixada: e a primeira que compila sob JDK 25. -->
         <lombok.version>1.18.48</lombok.version>
+        <!-- Versao passada em aula. -->
+        <java-jwt.version>4.4.0</java-jwt.version>
     </properties>
 
     <dependencies>
+        <!-- API REST: controllers, Jackson e Tomcat embutido -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+
+        <!-- Autenticacao e autorizacao -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-security</artifactId>
+        </dependency>
+
+        <!-- Geracao e validacao do token JWT -->
+        <dependency>
+            <groupId>com.auth0</groupId>
+            <artifactId>java-jwt</artifactId>
+            <version>${java-jwt.version}</version>
+        </dependency>
+
+        <!-- Bean Validation dos DTOs (@NotBlank, @Email, @Size...) -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-validation</artifactId>
+        </dependency>
+
         <!-- Persistencia: JPA e Hibernate, para o pacote entity -->
         <dependency>
             <groupId>org.springframework.boot</groupId>

@@ -18,18 +18,24 @@
     <description>TroiaFilmes - Trabalho 1 de Desenvolvimento Backend com Spring Boot (UNESC)</description>
 
     <!--
-        As dependencias crescem junto com as entregas. A Aula 9 trouxe a camada
-        web, o Spring Security, o JWT e o Bean Validation dos DTOs. A
-        documentacao de API (Swagger) entra na Aula 11.
+        As dependencias cresceram junto com as entregas: JPA e Flyway na Aula 8;
+        web, Spring Security, JWT e Bean Validation na Aula 9; a documentacao
+        da API (Swagger/OpenAPI) na Aula 11.
     -->
     <properties>
-        <java.version>21</java.version>
-        <maven.compiler.release>21</maven.compiler.release>
+        <!--
+            Bytecode Java 17: o minimo do Spring Boot 3, e o que roda em qualquer
+            JDK 17 ou mais novo (17, 21, 25...). Com 21, quem tivesse o JDK 17
+            configurado, como o JAVA_HOME desta maquina, nem conseguiria compilar.
+        -->
+        <java.version>17</java.version>
+        <maven.compiler.release>17</maven.compiler.release>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <!-- Versao fixada: e a primeira que compila sob JDK 25. -->
         <lombok.version>1.18.48</lombok.version>
         <!-- Versao passada em aula. -->
         <java-jwt.version>4.4.0</java-jwt.version>
+        <springdoc.version>2.9.1</springdoc.version>
     </properties>
 
     <dependencies>
@@ -50,6 +56,13 @@
             <groupId>com.auth0</groupId>
             <artifactId>java-jwt</artifactId>
             <version>${java-jwt.version}</version>
+        </dependency>
+
+        <!-- Documentacao da API: Swagger UI em /swagger-ui.html -->
+        <dependency>
+            <groupId>org.springdoc</groupId>
+            <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+            <version>${springdoc.version}</version>
         </dependency>
 
         <!-- Bean Validation dos DTOs (@NotBlank, @Email, @Size...) -->
@@ -92,6 +105,11 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-test</artifactId>
             <scope>test</scope>
         </dependency>
     </dependencies>

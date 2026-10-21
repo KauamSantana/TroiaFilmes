@@ -13,8 +13,19 @@ target/
 .classpath
 nbproject/
 
+# --------------------------------------------------------------- frontend
+node_modules/
+frontend/dist/
+frontend/.vite/
+
+# ------------------------------------------------- imagens enviadas
+# Conteudo gerado em execucao pela administracao: nao pertence ao codigo.
+uploads/
+
 # ------------------------------------------------------------- ambiente
 .env
+.env.local
+*.local
 *.log
 
 # ------------------------------------------------- sistema operacional

@@ -46,6 +46,11 @@ public class TokenConfig {
                 .sign(algoritmo);
     }
 
+    /** Validade do token em segundos, informada ao cliente na resposta do login. */
+    public long getExpiracaoSegundos() {
+        return expiracaoSegundos;
+    }
+
     /**
      * Confere assinatura, emissor e validade.
      *

@@ -2,14 +2,17 @@ package br.edu.unesc.troiafilmes.repository;
 
 import br.edu.unesc.troiafilmes.entity.Usuario;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
+@Repository
 public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
 
-    /** Usado no login e na validação do token: o e-mail é o identificador da conta. */
     Optional<Usuario> findByEmail(String email);
 
-    /** Usado no cadastro, para recusar e-mail repetido antes de bater na constraint. */
     boolean existsByEmail(String email);
+
+    /** Usado na atualização de cadastro, para não acusar conflito com o próprio registro. */
+    boolean existsByEmailAndIdNot(String email, Long id);
 }

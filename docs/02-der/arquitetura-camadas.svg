@@ -1,0 +1,82 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1180" height="796" viewBox="0 0 1180 796" font-family="Segoe UI, Arial, sans-serif">
+  <rect width="1180" height="796" fill="#f7f8fb"/>
+  <defs><marker id="ponta" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#c23b22"/></marker></defs>
+  <rect x="250" y="30" width="640" height="54" rx="8" fill="#16161d" stroke="#2a2a36"/>
+  <text x="272" y="52" fill="#ffffff" font-size="14" font-weight="700">Cliente</text>
+  <text x="272" y="70" fill="#a1a1ac" font-size="11" font-family="Consolas, monospace">Frontend React (Vite) · Swagger UI · Postman</text>
+  <line x1="310" y1="84" x2="310" y2="106" stroke="#c23b22" stroke-width="2" marker-end="url(#ponta)"/>
+  <text x="322" y="101.0" fill="#c23b22" font-size="10.5" text-anchor="start">HTTP + Bearer JWT</text>
+  <rect x="250" y="110" width="640" height="88" rx="8" fill="#eef2fb" stroke="#b9c6e8" stroke-width="1.5"/>
+  <rect x="250" y="110" width="6" height="88" rx="3" fill="#1f3864"/>
+  <text x="272" y="138" fill="#1f3864" font-size="17" font-weight="700">Controller</text>
+  <text x="272" y="158" fill="#5b6474" font-size="12">Recebe o HTTP, valida o corpo com @Valid e devolve DTOs</text>
+  <text x="272" y="180" fill="#1b1b1f" font-size="11" font-family="Consolas, monospace">AuthController · FilmeController · PerfilController · AvaliacaoController  (11 controllers, 49 endpoints)</text>
+  <line x1="310" y1="198" x2="310" y2="246" stroke="#c23b22" stroke-width="2" marker-end="url(#ponta)"/>
+  <text x="322" y="228.0" fill="#c23b22" font-size="10.5" text-anchor="start">chama</text>
+  <rect x="250" y="250" width="640" height="88" rx="8" fill="#eaf5ef" stroke="#aed5c1" stroke-width="1.5"/>
+  <rect x="250" y="250" width="6" height="88" rx="3" fill="#2e6b4f"/>
+  <text x="272" y="278" fill="#2e6b4f" font-size="17" font-weight="700">Service</text>
+  <text x="272" y="298" fill="#5b6474" font-size="12">Regras de negócio e transações (@Transactional)</text>
+  <text x="272" y="320" fill="#1b1b1f" font-size="11" font-family="Consolas, monospace">AuthService · FilmeService · PerfilService · AssinaturaService  (11 services, 18 regras de negócio)</text>
+  <line x1="310" y1="338" x2="310" y2="386" stroke="#c23b22" stroke-width="2" marker-end="url(#ponta)"/>
+  <text x="322" y="368.0" fill="#c23b22" font-size="10.5" text-anchor="start">consulta/persiste</text>
+  <rect x="250" y="390" width="640" height="88" rx="8" fill="#fdf3e7" stroke="#e8cfa8" stroke-width="1.5"/>
+  <rect x="250" y="390" width="6" height="88" rx="3" fill="#8a5a12"/>
+  <text x="272" y="418" fill="#8a5a12" font-size="17" font-weight="700">Repository</text>
+  <text x="272" y="438" fill="#5b6474" font-size="12">Acesso a dados com Spring Data JPA</text>
+  <text x="272" y="460" fill="#1b1b1f" font-size="11" font-family="Consolas, monospace">JpaRepository · JpaSpecificationExecutor · @Query de agregação  (10 repositories)</text>
+  <line x1="310" y1="478" x2="310" y2="526" stroke="#c23b22" stroke-width="2" marker-end="url(#ponta)"/>
+  <text x="322" y="508.0" fill="#c23b22" font-size="10.5" text-anchor="start">mapeia</text>
+  <rect x="250" y="530" width="640" height="88" rx="8" fill="#f6eef8" stroke="#d9bce0" stroke-width="1.5"/>
+  <rect x="250" y="530" width="6" height="88" rx="3" fill="#6b2d7a"/>
+  <text x="272" y="558" fill="#6b2d7a" font-size="17" font-weight="700">Entity</text>
+  <text x="272" y="578" fill="#5b6474" font-size="12">Modelo de domínio mapeado com JPA/Hibernate</text>
+  <text x="272" y="600" fill="#1b1b1f" font-size="11" font-family="Consolas, monospace">Usuario · Perfil · Filme · Categoria · Avaliacao · Plano · Assinatura · ItemLista · Historico</text>
+  <rect x="250" y="670" width="640" height="66" rx="8" fill="#1f3864" stroke="#16294a"/>
+  <text x="272" y="696" fill="#ffffff" font-size="14" font-weight="700">PostgreSQL 17</text>
+  <text x="272" y="716" fill="#c5d2ec" font-size="11" font-family="Consolas, monospace">Schema versionado por Flyway · V1 a V5 · 9 tabelas de domínio</text>
+  <line x1="310" y1="618" x2="310" y2="666" stroke="#c23b22" stroke-width="2" marker-end="url(#ponta)"/>
+  <text x="322" y="648.0" fill="#c23b22" font-size="10.5" text-anchor="start">JDBC</text>
+  <rect x="924" y="110" width="226" height="131" rx="8" fill="#fdeced" stroke="#f0b9bd" stroke-width="1.5" stroke-dasharray="5 3"/>
+  <text x="938" y="134" fill="#a01722" font-size="13" font-weight="700">Security</text>
+  <text x="938" y="154" fill="#5b6474" font-size="10.5" font-family="Consolas, monospace">SecurityFilter</text>
+  <text x="938" y="171" fill="#5b6474" font-size="10.5" font-family="Consolas, monospace">TokenConfig (java-jwt, HS256)</text>
+  <text x="938" y="188" fill="#5b6474" font-size="10.5" font-family="Consolas, monospace">SecurityConfig</text>
+  <text x="938" y="205" fill="#5b6474" font-size="10.5" font-family="Consolas, monospace">AuthConfig (UserDetailsService)</text>
+  <text x="938" y="222" fill="#5b6474" font-size="10.5" font-family="Consolas, monospace">@PreAuthorize</text>
+  <rect x="924" y="263" width="226" height="114" rx="8" fill="#eef7fb" stroke="#b3d8e8" stroke-width="1.5" stroke-dasharray="5 3"/>
+  <text x="938" y="287" fill="#15607a" font-size="13" font-weight="700">DTO + Validation</text>
+  <text x="938" y="307" fill="#5b6474" font-size="10.5" font-family="Consolas, monospace">records de request/response</text>
+  <text x="938" y="324" fill="#5b6474" font-size="10.5" font-family="Consolas, monospace">@NotBlank @Email @Size</text>
+  <text x="938" y="341" fill="#5b6474" font-size="10.5" font-family="Consolas, monospace">@Min @Max @Positive</text>
+  <text x="938" y="358" fill="#5b6474" font-size="10.5" font-family="Consolas, monospace">Mappers estáticos</text>
+  <rect x="924" y="399" width="226" height="114" rx="8" fill="#f4f1e8" stroke="#d3c9a8" stroke-width="1.5" stroke-dasharray="5 3"/>
+  <text x="938" y="423" fill="#6b5a1e" font-size="13" font-weight="700">Exception</text>
+  <text x="938" y="443" fill="#5b6474" font-size="10.5" font-family="Consolas, monospace">@RestControllerAdvice</text>
+  <text x="938" y="460" fill="#5b6474" font-size="10.5" font-family="Consolas, monospace">RecursoNaoEncontrado -&gt; 404</text>
+  <text x="938" y="477" fill="#5b6474" font-size="10.5" font-family="Consolas, monospace">RegraDeNegocio -&gt; 409</text>
+  <text x="938" y="494" fill="#5b6474" font-size="10.5" font-family="Consolas, monospace">AcessoNegado -&gt; 403</text>
+  <text x="40" y="116" fill="#1b1b1f" font-size="13" font-weight="700">Caminho de uma requisição</text>
+  <circle cx="51" cy="146" r="11" fill="#a01722"/>
+  <text x="51" y="150" fill="#ffffff" font-size="11" font-weight="700" text-anchor="middle">1</text>
+  <text x="70" y="150" fill="#5b6474" font-size="11">Requisição chega</text>
+  <circle cx="51" cy="180" r="11" fill="#a01722"/>
+  <text x="51" y="184" fill="#ffffff" font-size="11" font-weight="700" text-anchor="middle">2</text>
+  <text x="70" y="184" fill="#5b6474" font-size="11">Filtro valida o JWT</text>
+  <circle cx="51" cy="214" r="11" fill="#a01722"/>
+  <text x="51" y="218" fill="#ffffff" font-size="11" font-weight="700" text-anchor="middle">3</text>
+  <text x="70" y="218" fill="#5b6474" font-size="11">Rota confere o papel</text>
+  <circle cx="51" cy="248" r="11" fill="#15607a"/>
+  <text x="51" y="252" fill="#ffffff" font-size="11" font-weight="700" text-anchor="middle">4</text>
+  <text x="70" y="252" fill="#5b6474" font-size="11">@Valid checa o corpo</text>
+  <circle cx="51" cy="282" r="11" fill="#2e6b4f"/>
+  <text x="51" y="286" fill="#ffffff" font-size="11" font-weight="700" text-anchor="middle">5</text>
+  <text x="70" y="286" fill="#5b6474" font-size="11">Service aplica a regra</text>
+  <circle cx="51" cy="316" r="11" fill="#8a5a12"/>
+  <text x="51" y="320" fill="#ffffff" font-size="11" font-weight="700" text-anchor="middle">6</text>
+  <text x="70" y="320" fill="#5b6474" font-size="11">Repository persiste</text>
+  <circle cx="51" cy="350" r="11" fill="#15607a"/>
+  <text x="51" y="354" fill="#ffffff" font-size="11" font-weight="700" text-anchor="middle">7</text>
+  <text x="70" y="354" fill="#5b6474" font-size="11">DTO volta como JSON</text>
+  <text x="40" y="770" fill="#1b1b1f" font-size="19" font-weight="700">TroiaFilmes - Arquitetura em camadas</text>
+</svg>

@@ -13,7 +13,7 @@ public record PerfilRequest(
         String nome,
 
         @Size(max = 500, message = "a URL do avatar deve ter no máximo 500 caracteres")
-        @Schema(example = "https://api.dicebear.com/9.x/bottts/svg?seed=principal")
+        @Schema(example = "/avatars/azul.svg")
         String avatarUrl,
 
         @Schema(description = "Marca o perfil como infantil", example = "false")

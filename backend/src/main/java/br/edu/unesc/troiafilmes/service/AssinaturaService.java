@@ -109,19 +109,6 @@ public class AssinaturaService {
         return AssinaturaMapper.paraResponse(nova);
     }
 
-    /** Cancela a assinatura vigente do usuário. */
-    @Transactional
-    public AssinaturaResponse cancelar(Long usuarioId) {
-        Assinatura vigente = assinaturaRepository.buscarAtivaComPlano(usuarioId)
-                .orElseThrow(() -> new RecursoNaoEncontradoException(
-                        "Este usuário não possui assinatura ativa para cancelar."));
-
-        vigente.cancelar();
-        log.info("Assinatura {} cancelada pelo usuário {}", vigente.getId(), usuarioId);
-
-        return AssinaturaMapper.paraResponse(assinaturaRepository.save(vigente));
-    }
-
     /**
      * Limite de perfis do usuário, derivado do plano vigente.
      *

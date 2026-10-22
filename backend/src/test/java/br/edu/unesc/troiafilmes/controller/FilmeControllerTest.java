@@ -138,6 +138,16 @@ class FilmeControllerTest {
         verify(filmeService, never()).criar(any());
     }
 
+    @Test
+    @WithMockUser(roles = "ADMIN")
+    @DisplayName("devolve 405, e nao 500, para um verbo que a rota nao aceita")
+    void verboNaoAceitoRecebe405() throws Exception {
+        mockMvc.perform(org.springframework.test.web.servlet.request.MockMvcRequestBuilders
+                        .delete("/api/filmes").with(csrf()))
+                .andExpect(status().isMethodNotAllowed())
+                .andExpect(jsonPath("$.status").value(405));
+    }
+
     private static FilmeRequest filmeValido() {
         return new FilmeRequest("Interestelar", "Sinopse.", 2014, 169, null, Set.of(1L, 6L));
     }

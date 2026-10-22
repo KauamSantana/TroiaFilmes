@@ -194,7 +194,6 @@ export const assinaturas = {
   ativa: () => api.get('/assinaturas/ativa'),
   historico: () => api.get('/assinaturas/historico'),
   contratar: (planoId) => api.post('/assinaturas', { planoId }),
-  cancelar: () => api.delete('/assinaturas'),
 }
 
 export const usuarios = {

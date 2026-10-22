@@ -6,9 +6,6 @@ public enum StatusAssinatura {
     /** Vigente. Cada usuário pode ter no máximo uma assinatura neste estado. */
     ATIVA,
 
-    /** Encerrada pelo próprio assinante ou substituída por outro plano. */
-    CANCELADA,
-
-    /** Encerrada porque a data de fim foi atingida. */
-    EXPIRADA
+    /** Encerrada porque o assinante contratou outro plano. */
+    CANCELADA
 }

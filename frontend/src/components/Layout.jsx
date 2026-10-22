@@ -1,4 +1,5 @@
 import { NavLink, Outlet, useNavigate } from 'react-router-dom'
+import { avatarDoPerfil } from '../services/avatares'
 import { useAuth } from '../context/AuthContext'
 
 /** Moldura das telas internas: cabecalho, navegacao e rodape. */
@@ -48,11 +49,7 @@ export default function Layout() {
         <div className="cabecalho-direita">
           {perfilAtivo && (
             <button type="button" className="chip-perfil" onClick={aoTrocarPerfil}>
-              {perfilAtivo.avatarUrl ? (
-                <img src={perfilAtivo.avatarUrl} alt="" />
-              ) : (
-                <span aria-hidden>👤</span>
-              )}
+              <img src={avatarDoPerfil(perfilAtivo)} alt="" />
               {perfilAtivo.nome}
             </button>
           )}

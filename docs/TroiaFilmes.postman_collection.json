@@ -81,6 +81,16 @@
       "type": "string"
     },
     {
+      "key": "planoPadraoId",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "planoPremiumId",
+      "value": "",
+      "type": "string"
+    },
+    {
       "key": "duracaoFilme",
       "value": "",
       "type": "string"
@@ -1352,7 +1362,7 @@
                 }
               ]
             },
-            "description": "Guarda em planoId o plano Premium, usado em 'Contratar plano'."
+            "description": "Guarda os ids dos planos Padrão e Premium, usados na troca de plano."
           },
           "response": [],
           "event": [
@@ -1361,8 +1371,11 @@
               "script": {
                 "type": "text/javascript",
                 "exec": [
-                  "const premium = pm.response.json().find(p => p.nome === 'Premium');",
-                  "if (premium) { pm.collectionVariables.set('planoId', premium.id); }"
+                  "const planos = pm.response.json();",
+                  "const padrao = planos.find(p => p.nome === 'Padrão');",
+                  "const premium = planos.find(p => p.nome === 'Premium');",
+                  "if (padrao) { pm.collectionVariables.set('planoPadraoId', padrao.id); }",
+                  "if (premium) { pm.collectionVariables.set('planoId', premium.id); pm.collectionVariables.set('planoPremiumId', premium.id); }"
                 ]
               }
             }
@@ -2200,10 +2213,15 @@
           "response": []
         },
         {
-          "name": "Cancelar assinatura",
+          "name": "Trocar para o plano Padrão",
           "request": {
-            "method": "DELETE",
-            "header": [],
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
             "url": {
               "raw": "{{baseUrl}}/api/assinaturas",
               "host": [
@@ -2213,12 +2231,33 @@
                 "api",
                 "assinaturas"
               ]
+            },
+            "description": "A assinatura Premium vigente é encerrada e a Padrão passa a valer.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"planoId\": \"{{planoPadraoId}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
             }
           },
-          "response": []
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('200 esperado', () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ]
         },
         {
-          "name": "Contratar plano",
+          "name": "Voltar ao plano Premium",
           "request": {
             "method": "POST",
             "header": [
@@ -2240,7 +2279,7 @@
             "description": "Contrata o Premium de novo, e a conta de demonstração volta ao estado original. Com uma assinatura ativa, contratar outra cancela a anterior: só pode existir uma ATIVA por conta.",
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"planoId\": \"{{planoId}}\"\n}",
+              "raw": "{\n  \"planoId\": \"{{planoPremiumId}}\"\n}",
               "options": {
                 "raw": {
                   "language": "json"

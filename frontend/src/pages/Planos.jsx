@@ -49,19 +49,6 @@ export default function Planos() {
     }
   }
 
-  const cancelar = async () => {
-    if (!window.confirm('Cancelar a assinatura vigente?')) return
-    setErro('')
-    setSucesso('')
-    try {
-      await apiAssinaturas.cancelar()
-      setSucesso('Assinatura cancelada. A conta fica limitada a 1 perfil.')
-      await carregar()
-    } catch (falha) {
-      setErro(mensagemDeErro(falha))
-    }
-  }
-
   if (carregando) return <Carregando texto="Carregando planos..." />
 
   return (
@@ -75,11 +62,6 @@ export default function Planos() {
               : 'Você não possui assinatura ativa.'}
           </p>
         </div>
-        {vigente && (
-          <button type="button" className="botao perigo" onClick={cancelar}>
-            Cancelar assinatura
-          </button>
-        )}
       </div>
 
       <Aviso tipo="erro">{erro}</Aviso>

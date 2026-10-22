@@ -5,9 +5,12 @@ import br.edu.unesc.troiafilmes.dto.response.ErroResponse;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.ConstraintViolationException;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.catalina.connector.ClientAbortException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.HttpMediaTypeNotSupportedException;
+import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -195,6 +198,32 @@ public class GlobalExceptionHandler {
                 req.getRequestURI(), ex.getMostSpecificCause().getMessage());
         return montar(HttpStatus.CONFLICT,
                 "A operação viola uma restrição de integridade dos dados.", req);
+    }
+
+    /** Verbo que a rota nao aceita, como DELETE numa rota que so tem GET e POST. */
+    @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
+    public ResponseEntity<ErroResponse> tratarMetodoNaoSuportado(
+            HttpRequestMethodNotSupportedException ex, HttpServletRequest req) {
+        return montar(HttpStatus.METHOD_NOT_ALLOWED,
+                "O método %s não é aceito em %s.".formatted(ex.getMethod(), req.getRequestURI()), req);
+    }
+
+    /** Corpo enviado num formato que a rota nao le (ex.: texto puro no lugar de JSON). */
+    @ExceptionHandler(HttpMediaTypeNotSupportedException.class)
+    public ResponseEntity<ErroResponse> tratarFormatoNaoSuportado(
+            HttpMediaTypeNotSupportedException ex, HttpServletRequest req) {
+        return montar(HttpStatus.UNSUPPORTED_MEDIA_TYPE,
+                "Formato de conteúdo não suportado. Envie o corpo como JSON.", req);
+    }
+
+    /**
+     * O navegador desistiu da resposta no meio do caminho, por exemplo ao trocar
+     * de pagina enquanto um poster ainda carregava. Nao e erro do servidor, e
+     * nao ha mais para quem responder.
+     */
+    @ExceptionHandler(ClientAbortException.class)
+    public void tratarConexaoEncerradaPeloCliente(ClientAbortException ex, HttpServletRequest req) {
+        log.debug("Cliente encerrou a conexão em {}", req.getRequestURI());
     }
 
     @ExceptionHandler(NoResourceFoundException.class)

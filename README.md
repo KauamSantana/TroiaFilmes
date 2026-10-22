@@ -122,7 +122,7 @@ forem `postgres`/`lab008r2`, informe os seus ao subir o backend, com `DB_USER` e
 `DB_PASSWORD`.
 
 **Em qualquer uma das opções, não é preciso criar tabela alguma**: o Flyway aplica as
-migrations `V1` a `V5` automaticamente no primeiro boot, incluindo a massa de dados de
+migrations `V1` a `V6` automaticamente no primeiro boot, incluindo a massa de dados de
 demonstração.
 
 > **Se uma migration falhar no meio do caminho**, o PostgreSQL reverte as tabelas, mas
@@ -230,7 +230,7 @@ TroiaFilmes/
 │       ├── main/resources/
 │       │   ├── application.properties
 │       │   ├── static/posters/        24 capas da carga inicial (entram no JAR)
-│       │   └── db/migration/          V1 a V5 (Flyway)
+│       │   └── db/migration/          V1 a V6 (Flyway)
 │       └── test/java/                 54 testes unitários e de camada web
 │   └── uploads/                       imagens enviadas em execução (fora do JAR, fora do Git)
 │
@@ -247,7 +247,7 @@ TroiaFilmes/
     ├── 01-documento-de-analise.docx / .md     documento de análise
     ├── 02-der/                                DER, classes UML e camadas (SVG e PNG)
     ├── 03-prototipo/                          18 capturas da aplicação
-    ├── 04-apresentacao.pptx                   deck do pitch (14 slides, com notas do apresentador)
+    ├── 04-apresentacao.pptx                   deck do pitch (9 slides, com notas do apresentador)
     ├── TroiaFilmes.postman_collection.json    59 requisições, tokens salvos automaticamente
     ├── smoke-test.sh                          61 verificações da API via curl
     └── criar-banco.sql                        criação do banco sem Docker
@@ -475,8 +475,7 @@ Mesmo padrão: `GET` para qualquer autenticado, escrita restrita a **ADMIN**.
 |---|---|---|
 | GET | `/ativa` | Assinatura vigente |
 | GET | `/historico` | Histórico de assinaturas |
-| POST | `/api/assinaturas` | Contrata (cancela a anterior) |
-| DELETE | `/api/assinaturas` | Cancela a vigente |
+| POST | `/api/assinaturas` | Contrata ou troca de plano (a anterior é encerrada) |
 
 ---
 
@@ -790,7 +789,7 @@ no próprio arquivo; em resumo:
 | Protótipo das telas | [`docs/03-prototipo/`](docs/03-prototipo/README.md) — 18 telas |
 | Banco de dados (DER e migrations) | [`docs/02-der/der.png`](docs/02-der/der.png) e `backend/src/main/resources/db/migration/` |
 | Código-fonte e README | este repositório |
-| Apresentação | [`docs/04-apresentacao.pptx`](docs/04-apresentacao.pptx) — 14 slides com notas do apresentador |
+| Apresentação | [`docs/04-apresentacao.pptx`](docs/04-apresentacao.pptx) — 9 slides com notas do apresentador |
 
 ---
 

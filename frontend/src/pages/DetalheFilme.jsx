@@ -1,5 +1,5 @@
-import { useCallback, useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom'
+import { useCallback, useEffect, useRef, useState } from 'react'
+import { useParams, useSearchParams } from 'react-router-dom'
 import {
   avaliacoes as apiAvaliacoes,
   filmes as apiFilmes,
@@ -11,19 +11,28 @@ import { useAuth } from '../context/AuthContext'
 import Poster from '../components/Poster'
 import Estrelas from '../components/Estrelas'
 import Aviso, { Carregando } from '../components/Aviso'
+import Player from '../components/Player'
 
 /**
  * Tela de detalhe: concentra a maior parte das regras de negocio visiveis
  * ao usuario (avaliar uma unica vez, Minha Lista, registro de progresso).
+ *
+ * Aberta com ?assistir=1 (vindo do "Continuar assistindo"), ja abre o
+ * player no ponto em que o perfil parou.
  */
 export default function DetalheFilme() {
   const { id } = useParams()
   const { perfilAtivo } = useAuth()
+  const [parametros] = useSearchParams()
+  // Lido uma unica vez: abrir o player so na chegada, nao a cada recarga.
+  const abrirAoCarregar = useRef(parametros.has('assistir'))
 
   const [filme, setFilme] = useState(null)
   const [listaAvaliacoes, setListaAvaliacoes] = useState([])
   const [naLista, setNaLista] = useState(false)
   const [minhaAvaliacao, setMinhaAvaliacao] = useState(null)
+  const [progresso, setProgresso] = useState(null)
+  const [player, setPlayer] = useState(null)
   const [carregando, setCarregando] = useState(true)
 
   const [nota, setNota] = useState(5)
@@ -34,14 +43,21 @@ export default function DetalheFilme() {
   const carregar = useCallback(async () => {
     setCarregando(true)
     try {
-      const [detalhe, avaliacoesDoFilme, estaNaLista, minhas] = await Promise.all([
+      const [detalhe, avaliacoesDoFilme, estaNaLista, minhas, historico] = await Promise.all([
         apiFilmes.porId(id),
         apiFilmes.avaliacoes(id),
         apiLista.contem(perfilAtivo.id, id),
         apiAvaliacoes.doPerfil(perfilAtivo.id),
+        apiHistorico.listar(perfilAtivo.id),
       ])
 
       setFilme(detalhe.data)
+      const registro = historico.data.find((h) => String(h.filme.id) === String(id)) ?? null
+      setProgresso(registro)
+      if (abrirAoCarregar.current) {
+        abrirAoCarregar.current = false
+        setPlayer({ inicio: pontoDePartida(registro) })
+      }
       setListaAvaliacoes(avaliacoesDoFilme.data.conteudo)
       setNaLista(estaNaLista.data.naLista)
 
@@ -85,30 +101,26 @@ export default function DetalheFilme() {
     }
   }
 
-  /** Simula o player: registra que o filme foi assistido ate o fim. */
-  const assistir = async () => {
+  const assistir = () => {
     limparMensagens()
-    try {
-      await apiHistorico.registrarProgresso(perfilAtivo.id, {
-        filmeId: Number(id),
-        minutosAssistidos: filme.duracaoMinutos,
-      })
-      setSucesso('Reprodução concluída e registrada no seu histórico.')
-    } catch (falha) {
-      setErro(mensagemDeErro(falha))
-    }
+    setPlayer({ inicio: pontoDePartida(progresso) })
   }
 
-  /** Registra uma parada no meio, alimentando o "Continuar assistindo". */
-  const assistirParcial = async () => {
-    limparMensagens()
-    const metade = Math.floor(filme.duracaoMinutos / 3)
+  /** Ao sair do player, grava ate onde o perfil assistiu. */
+  const sairDoPlayer = async (minutos) => {
+    setPlayer(null)
+    if (minutos <= 0) return
     try {
-      await apiHistorico.registrarProgresso(perfilAtivo.id, {
+      const { data } = await apiHistorico.registrarProgresso(perfilAtivo.id, {
         filmeId: Number(id),
-        minutosAssistidos: metade,
+        minutosAssistidos: minutos,
       })
-      setSucesso(`Parou em ${metade} min. O filme aparece em "Continuar assistindo".`)
+      setProgresso(data)
+      setSucesso(
+        data.concluido
+          ? 'Filme concluído. Ele aparece em "Já assistidos".'
+          : `Você parou em ${minutos} min. O filme aparece em "Continuar assistindo".`,
+      )
     } catch (falha) {
       setErro(mensagemDeErro(falha))
     }
@@ -179,10 +191,7 @@ export default function DetalheFilme() {
 
           <div className="acoes-detalhe">
             <button type="button" className="botao" onClick={assistir}>
-              ▶ Assistir agora
-            </button>
-            <button type="button" className="botao secundario" onClick={assistirParcial}>
-              Assistir um pouco
+              {rotuloAssistir(progresso)}
             </button>
             <button
               type="button"
@@ -192,8 +201,15 @@ export default function DetalheFilme() {
               {naLista ? '− Remover da Minha Lista' : '+ Minha Lista'}
             </button>
           </div>
+          {progresso && !progresso.concluido && progresso.minutosAssistidos > 0 && (
+            <div className="barra-progresso" title={`${progresso.percentualAssistido}% assistido`}>
+              <span style={{ width: `${progresso.percentualAssistido}%` }} />
+            </div>
+          )}
         </div>
       </div>
+
+      {player && <Player filme={filme} inicio={player.inicio} aoSair={sairDoPlayer} />}
 
       <div className="bloco">
         <h2>{minhaAvaliacao ? 'Sua avaliação' : 'Avaliar este filme'}</h2>
@@ -252,4 +268,15 @@ export default function DetalheFilme() {
       </div>
     </>
   )
+}
+
+/** Filme em andamento continua de onde parou; concluido ou nunca visto comeca do zero. */
+function pontoDePartida(registro) {
+  return registro && !registro.concluido ? registro.minutosAssistidos : 0
+}
+
+function rotuloAssistir(registro) {
+  if (!registro || registro.minutosAssistidos === 0) return '▶ Assistir'
+  if (registro.concluido) return '▶ Assistir de novo'
+  return `▶ Continuar de ${registro.minutosAssistidos} min`
 }

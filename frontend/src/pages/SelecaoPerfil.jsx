@@ -4,6 +4,7 @@ import { useAuth } from '../context/AuthContext'
 import { mensagemDeErro, perfis as apiPerfis, assinaturas } from '../services/api'
 import Aviso, { Carregando } from '../components/Aviso'
 import Modal from '../components/Modal'
+import { AVATARES, avatarDoPerfil } from '../services/avatares'
 
 /**
  * Tela de escolha de perfil, no modelo dos servicos de streaming.
@@ -53,7 +54,10 @@ export default function SelecaoPerfil() {
 
   const abrirCriacao = () => {
     setEmEdicao(null)
-    setForm({ nome: '', avatarUrl: '', infantil: false })
+    // Sugere a primeira cor que ainda nao esta em uso na conta.
+    const emUso = lista.map(avatarDoPerfil)
+    const livre = AVATARES.find((a) => !emUso.includes(a)) ?? AVATARES[0]
+    setForm({ nome: '', avatarUrl: livre, infantil: false })
     setModalAberto(true)
   }
 
@@ -62,7 +66,7 @@ export default function SelecaoPerfil() {
     setEmEdicao(perfil)
     setForm({
       nome: perfil.nome,
-      avatarUrl: perfil.avatarUrl || '',
+      avatarUrl: avatarDoPerfil(perfil),
       infantil: perfil.infantil,
     })
     setModalAberto(true)
@@ -123,11 +127,7 @@ export default function SelecaoPerfil() {
           {lista.map((perfil) => (
             <div key={perfil.id} style={{ textAlign: 'center' }}>
               <button type="button" className="cartao-perfil" onClick={() => escolher(perfil)}>
-                {perfil.avatarUrl ? (
-                  <img className="avatar-perfil" src={perfil.avatarUrl} alt="" />
-                ) : (
-                  <span className="avatar-perfil">{perfil.nome.charAt(0).toUpperCase()}</span>
-                )}
+                <img className="avatar-perfil" src={avatarDoPerfil(perfil)} alt="" />
                 <span>
                   {perfil.nome}{' '}
                   {perfil.infantil && <span className="etiqueta-infantil">infantil</span>}
@@ -193,13 +193,20 @@ export default function SelecaoPerfil() {
             </div>
 
             <div className="campo">
-              <label htmlFor="perfil-avatar">URL do avatar (opcional)</label>
-              <input
-                id="perfil-avatar"
-                value={form.avatarUrl}
-                onChange={(ev) => setForm({ ...form, avatarUrl: ev.target.value })}
-                placeholder="https://api.dicebear.com/9.x/bottts/svg?seed=novo"
-              />
+              <label>Avatar</label>
+              <div className="escolha-avatar">
+                {AVATARES.map((avatar) => (
+                  <button
+                    key={avatar}
+                    type="button"
+                    className={form.avatarUrl === avatar ? 'selecionado' : ''}
+                    onClick={() => setForm({ ...form, avatarUrl: avatar })}
+                    aria-label={`Escolher o avatar ${avatar.split('/').pop().replace('.svg', '')}`}
+                  >
+                    <img src={avatar} alt="" />
+                  </button>
+                ))}
+              </div>
             </div>
 
             <div className="caixa-checkbox">

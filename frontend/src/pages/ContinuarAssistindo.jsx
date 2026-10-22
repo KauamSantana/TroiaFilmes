@@ -45,8 +45,8 @@ export default function ContinuarAssistindo() {
 
       {emAndamento.length === 0 ? (
         <Vazio>
-          Nada em andamento. Abra um filme e use &quot;Assistir um pouco&quot; para ver
-          esta prateleira funcionando.
+          Nada em andamento. Abra um filme, clique em Assistir e saia antes do fim: ele
+          aparece aqui para você continuar de onde parou.
         </Vazio>
       ) : (
         <div className="grade-filmes">
@@ -55,6 +55,7 @@ export default function ContinuarAssistindo() {
               key={registro.id}
               filme={registro.filme}
               progresso={registro.percentualAssistido}
+              destino={`/filmes/${registro.filme.id}?assistir=1`}
             />
           ))}
         </div>

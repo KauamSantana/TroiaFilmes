@@ -69,14 +69,16 @@ Concentra a maior parte das regras de negócio visíveis ao usuário:
   bloco aparece como "Sua avaliação", com as opções de atualizar e excluir — a regra de
   avaliação única (RN01) refletida na interface.
 - **Minha Lista** — o botão alterna entre adicionar e remover conforme o estado atual.
-- **Assistir agora / Assistir um pouco** — registram progresso de reprodução. O primeiro
-  marca como concluído; o segundo para no meio, alimentando "Continuar assistindo".
+- **Assistir** — abre o player. Se o perfil já começou o filme, o botão mostra de onde
+  continuar ("▶ Continuar de 40 min"), com a barra de progresso logo abaixo.
 
-### 7. Progresso registrado
+### 7. Player
 
-![Progresso registrado](08-detalhe-progresso-registrado.png)
+![Player](08-player.png)
 
-Confirmação de que o progresso foi gravado, com a indicação de onde o filme vai reaparecer.
+Reprodução simulada: o sistema não transmite vídeo, mas o tempo do filme anda, e dá para
+pausar, voltar ou avançar 10 minutos e clicar na barra. Ao sair, o minuto em que o perfil
+parou é gravado pela API. A partir de 90% da duração, o filme conta como concluído (RN08).
 
 ### 8. Minha Lista
 
@@ -91,7 +93,7 @@ relacionamento N:N entre perfil e filme resolvido por entidade associativa.
 
 Duas prateleiras: o que está em andamento, com barra de progresso proporcional aos
 minutos assistidos, e o que já foi concluído. O corte entre uma e outra é a regra dos
-90% (RN08).
+90% (RN08). Clicar num filme em andamento abre o player de onde o perfil parou.
 
 ### 10. Planos
 
@@ -105,7 +107,8 @@ menos perfis do que a conta usa é recusado com a mensagem explicando o motivo (
 
 ![Novo perfil](12-novo-perfil-modal.png)
 
-Criação de perfil a partir da seleção de perfis. O limite de perfis vem do plano da
+Criação de perfil a partir da seleção de perfis, com o avatar escolhido entre cinco
+opções. O limite de perfis vem do plano da
 assinatura ativa: com ele atingido, o backend recusa com `409` e a mensagem diz qual é o
 limite do plano.
 

@@ -55,11 +55,4 @@ public class AssinaturaController {
                                         @AuthenticationPrincipal Usuario autenticado) {
         return assinaturaService.contratar(autenticado.getId(), request.planoId());
     }
-
-    @DeleteMapping
-    @Operation(summary = "Cancela a assinatura vigente")
-    @ApiResponse(responseCode = "404", description = "A conta não possui assinatura ativa")
-    public AssinaturaResponse cancelar(@AuthenticationPrincipal Usuario autenticado) {
-        return assinaturaService.cancelar(autenticado.getId());
-    }
 }

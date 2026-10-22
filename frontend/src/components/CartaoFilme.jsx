@@ -1,10 +1,13 @@
 import { Link } from 'react-router-dom'
 import Poster from './Poster'
 
-/** Cartao do filme usado nas grades de catalogo, lista e historico. */
-export default function CartaoFilme({ filme, progresso }) {
+/**
+ * Cartao do filme usado nas grades de catalogo, lista e historico.
+ * `destino` troca o link padrao (o detalhe do filme) quando preciso.
+ */
+export default function CartaoFilme({ filme, progresso, destino }) {
   return (
-    <Link to={`/filmes/${filme.id}`} className="cartao-filme">
+    <Link to={destino ?? `/filmes/${filme.id}`} className="cartao-filme">
       <Poster titulo={filme.titulo} url={filme.posterUrl} notaMedia={filme.notaMedia} />
       <div className="info-filme">
         <h3>{filme.titulo}</h3>

@@ -24,6 +24,4 @@ public interface ItemListaRepository extends JpaRepository<ItemLista, Long> {
              ORDER BY il.adicionadoEm DESC
             """)
     List<ItemLista> listarPorPerfil(@Param("perfilId") Long perfilId);
-
-    void deleteByPerfilIdAndFilmeId(Long perfilId, Long filmeId);
 }

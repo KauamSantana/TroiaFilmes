@@ -130,14 +130,15 @@ h3 {
   border: 1px solid var(--cor-borda);
   border-radius: 999px;
   font-size: 0.85rem;
+  font-family: inherit;
+  color: var(--cor-texto);
   cursor: pointer;
 }
 
 .chip-perfil img {
-  width: 24px;
-  height: 24px;
-  border-radius: 50%;
-  background: var(--cor-superficie);
+  width: 26px;
+  height: 26px;
+  border-radius: 4px;
 }
 
 .rodape {
@@ -428,6 +429,33 @@ textarea {
   color: var(--cor-texto);
   object-fit: cover;
   transition: border-color var(--transicao);
+}
+
+.escolha-avatar {
+  display: flex;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+}
+
+.escolha-avatar button {
+  padding: 0;
+  border: 3px solid transparent;
+  border-radius: 10px;
+  background: none;
+  cursor: pointer;
+  transition: border-color var(--transicao);
+}
+
+.escolha-avatar button img {
+  display: block;
+  width: 56px;
+  height: 56px;
+  border-radius: 7px;
+}
+
+.escolha-avatar button:hover,
+.escolha-avatar button.selecionado {
+  border-color: var(--cor-texto);
 }
 
 .cartao-perfil:hover .avatar-perfil {
@@ -899,4 +927,99 @@ tbody tr:hover {
   .editor-poster {
     flex-direction: column;
   }
+}
+
+/* ------------------------------------------------------------- player */
+/* Reproducao simulada: tela cheia, poster desfocado ao fundo e controles
+   embaixo, no mesmo arranjo dos servicos de streaming. */
+
+.player {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  background: #000;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  overflow: hidden;
+}
+
+.player-fundo {
+  position: absolute;
+  inset: -40px;
+  background-size: cover;
+  background-position: center;
+  filter: blur(18px) brightness(0.35);
+}
+
+.player-topo,
+.player-centro,
+.player-rodape {
+  position: relative;
+  padding: 1.5rem 2rem;
+}
+
+.player-topo {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+}
+
+.player-titulo {
+  font-size: 1.4rem;
+  font-weight: 700;
+}
+
+.player-centro {
+  display: grid;
+  place-items: center;
+}
+
+.player-play {
+  width: 96px;
+  height: 96px;
+  border-radius: 50%;
+  border: 2px solid rgba(255, 255, 255, 0.7);
+  background: rgba(0, 0, 0, 0.35);
+  color: #fff;
+  font-size: 2rem;
+  cursor: pointer;
+  transition: transform var(--transicao), background var(--transicao);
+}
+
+.player-play:hover {
+  transform: scale(1.06);
+  background: rgba(229, 9, 20, 0.6);
+}
+
+.player-aviso {
+  font-size: 1.6rem;
+  font-weight: 700;
+}
+
+.player-barra {
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.25);
+  cursor: pointer;
+  margin-bottom: 1rem;
+}
+
+.player-barra span {
+  display: block;
+  height: 100%;
+  border-radius: 999px;
+  background: var(--cor-marca);
+}
+
+.player-controles {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.player-tempo {
+  color: var(--cor-texto-suave);
+  font-variant-numeric: tabular-nums;
 }

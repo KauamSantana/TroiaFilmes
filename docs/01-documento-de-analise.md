@@ -112,7 +112,7 @@ análise, protótipo de telas, README e apresentação.
 |---|---|
 | RF22 | O administrador deve poder cadastrar, listar, editar e excluir planos. |
 | RF23 | O usuário deve poder consultar os planos disponíveis e contratar um deles. |
-| RF24 | O usuário deve poder consultar a assinatura vigente, o histórico de assinaturas e cancelar a assinatura atual. |
+| RF24 | O usuário deve poder consultar a assinatura vigente e o histórico de assinaturas, e trocar de plano. |
 
 ### 3.7 Administração
 
@@ -135,7 +135,7 @@ análise, protótipo de telas, README e apresentação.
 | RNF05 | A API deve ser stateless. | Sem sessão e sem cookie; cada requisição carrega o próprio JWT |
 | RNF06 | Os erros devem ter formato único e previsível. | `@RestControllerAdvice` central, com o mesmo corpo `ErroResponse` em toda falha |
 | RNF07 | As entradas devem ser validadas antes de chegar à lógica de negócio. | Bean Validation (`@NotBlank`, `@Email`, `@Size`, `@Min`, `@Max`, `@Positive`) |
-| RNF08 | O schema do banco deve ser versionado e reproduzível. | Flyway, migrations `V1` a `V5`, com `ddl-auto=validate` |
+| RNF08 | O schema do banco deve ser versionado e reproduzível. | Flyway, migrations `V1` a `V6`, com `ddl-auto=validate` |
 | RNF09 | Consultas de listagem não podem sofrer com o problema de N+1. | Paginação seguida de hidratação em lote; agregações resolvidas em uma única consulta |
 | RNF10 | A API deve ser documentada e testável sem código adicional. | OpenAPI 3 com Swagger UI e autenticação Bearer integrada |
 | RNF11 | O ambiente deve ser reproduzível por qualquer integrante. | Docker Compose para o banco e Maven Wrapper para o build |
@@ -217,7 +217,7 @@ O diagrama apresenta as 9 entidades de domínio com seus tipos Java, as 3 enumer
 (`Role`, `StatusAssinatura`, `Qualidade`) e os métodos de negócio que residem na própria
 entidade — em vez de vazarem para o service:
 
-- `Assinatura.cancelar()` — encerra a assinatura registrando a data de término;
+- `Assinatura.cancelar()` — encerra a assinatura anterior quando o assinante troca de plano, registrando a data de término;
 - `HistoricoVisualizacao.registrarProgresso(int, int)` — grava a posição e reavalia a
   conclusão segundo a regra dos 90%;
 - `HistoricoVisualizacao.getPercentualAssistido()` — deriva o percentual para a interface;

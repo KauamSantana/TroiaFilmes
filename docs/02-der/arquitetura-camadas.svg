@@ -34,7 +34,7 @@
   <text x="272" y="600" fill="#1b1b1f" font-size="11" font-family="Consolas, monospace">Usuario · Perfil · Filme · Categoria · Avaliacao · Plano · Assinatura · ItemLista · Historico</text>
   <rect x="250" y="670" width="640" height="66" rx="8" fill="#1f3864" stroke="#16294a"/>
   <text x="272" y="696" fill="#ffffff" font-size="14" font-weight="700">PostgreSQL 17</text>
-  <text x="272" y="716" fill="#c5d2ec" font-size="11" font-family="Consolas, monospace">Schema versionado por Flyway · V1 a V5 · 9 tabelas de domínio</text>
+  <text x="272" y="716" fill="#c5d2ec" font-size="11" font-family="Consolas, monospace">Schema versionado por Flyway · V1 a V6 · 9 tabelas de domínio</text>
   <line x1="310" y1="618" x2="310" y2="666" stroke="#c23b22" stroke-width="2" marker-end="url(#ponta)"/>
   <text x="322" y="648.0" fill="#c23b22" font-size="10.5" text-anchor="start">JDBC</text>
   <rect x="924" y="110" width="226" height="131" rx="8" fill="#fdeced" stroke="#f0b9bd" stroke-width="1.5" stroke-dasharray="5 3"/>

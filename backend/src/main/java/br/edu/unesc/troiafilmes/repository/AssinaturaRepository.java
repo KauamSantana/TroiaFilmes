@@ -25,8 +25,6 @@ public interface AssinaturaRepository extends JpaRepository<Assinatura, Long> {
             """)
     Optional<Assinatura> buscarAtivaComPlano(@Param("usuarioId") Long usuarioId);
 
-    Optional<Assinatura> findByUsuarioIdAndStatus(Long usuarioId, StatusAssinatura status);
-
     @Query("""
             SELECT a FROM Assinatura a
               JOIN FETCH a.plano
